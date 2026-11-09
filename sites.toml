@@ -6,9 +6,9 @@ name = "Portfolio"
 url = "https://antonybdc.me"
 
 [[service]]
-id = "github"
-name = "GitHub Pages"
-url = "https://businessantonybdc-crypto.github.io/status-page/status.json"
+id = "games"
+name = "Games"
+url = "https://businessantonybdc-crypto.github.io/games-showcase/"
 # Optional settings:
 # expect_status = 200
 # keyword = "some text that must appear in the response"
