@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Status · {{HEADLINE}}</title>
+<meta name="description" content="Live status and 90-day uptime of my homelab services.">
+<meta name="color-scheme" content="light dark">
+<link rel="preload" href="assets/inter-tight-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="alternate" type="application/json" href="status.json">
+<style>
+@font-face{font-family:"Inter Tight";font-weight:400;font-display:swap;src:url(assets/inter-tight-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter Tight";font-weight:600;font-display:swap;src:url(assets/inter-tight-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-weight:400;font-display:swap;src:url(assets/jetbrains-mono-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-weight:700;font-display:swap;src:url(assets/jetbrains-mono-latin-700-normal.woff2) format("woff2")}
+
+:root{
+  --bg:#fafaf9; --fg:#0c0c0d; --muted:#6b6b70; --line:#e4e4e2;
+  --ok:#0c0c0d; --partial:#a3a3a8; --down:#d93a3f; --empty:#e9e9e7;
+  --sans:"Inter Tight",ui-sans-serif,system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0b0b0c; --fg:#f2f2f0; --muted:#8e8e93; --line:#232326;
+        --ok:#f2f2f0; --partial:#5e5e63; --down:#ff5b5f; --empty:#1f1f22}
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.5 var(--sans);
+     -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:inherit;text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{text-decoration-thickness:2px}
+a:focus-visible{outline:2px solid var(--fg);outline-offset:3px;border-radius:2px}
+.wrap{max-width:880px;margin:0 auto;padding:0 28px}
+
+/* top bar */
+.top{display:flex;align-items:center;justify-content:space-between;padding:28px 0 0}
+.mark{display:flex;align-items:baseline;gap:12px;text-decoration:none}
+.mark b{font:700 22px/1 var(--mono);letter-spacing:-.04em}
+.mark span{font-size:15px;color:var(--muted)}
+.updated{font:400 13px/1.4 var(--mono);color:var(--muted);text-align:right}
+
+/* headline */
+.hero{padding:96px 0 56px;border-bottom:1px solid var(--line)}
+h1{font:600 clamp(40px,7vw,72px)/1.02 var(--sans);letter-spacing:-.035em;margin:0;max-width:14ch}
+.is-partial h1 em,.is-major h1 em{color:var(--down)}
+h1 em{font-style:normal}
+.sub{margin:22px 0 0;color:var(--muted);max-width:52ch}
+
+/* services */
+h2{font:600 13px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:56px 0 8px}
+.service{padding:26px 0 22px;border-bottom:1px solid var(--line)}
+.service header{display:flex;justify-content:space-between;align-items:baseline;gap:20px;margin-bottom:16px}
+.who{display:flex;align-items:baseline;gap:12px;min-width:0;flex-wrap:wrap}
+.who .dot{width:8px;height:8px;border-radius:50%;background:var(--fg);transform:translateY(-2px);flex:none}
+.is-down .who .dot{background:var(--down)}
+.who h3{font:600 20px/1.2 var(--sans);letter-spacing:-.015em;margin:0}
+.who a{font:400 13px/1 var(--mono);color:var(--muted);text-decoration:none;overflow-wrap:anywhere}
+.who a:hover{color:var(--fg)}
+.nums{display:flex;gap:22px;font:400 14px/1 var(--mono);white-space:nowrap}
+.nums .now{color:var(--muted)}
+.is-down .nums .now{color:var(--down)}
+.nums .pct{font-weight:700}
+
+.bars{display:grid;grid-template-columns:repeat(90,1fr);gap:2px;height:36px;touch-action:pan-y}
+.bar{display:block;border-radius:1.5px;background:var(--empty);transition:transform .15s ease-out,opacity .15s ease-out;transform-origin:bottom}
+.bar.ok{background:var(--ok)}
+.bar.partial{background:var(--partial)}
+.bar.down{background:var(--down)}
+.bars:hover .bar,.bars.active .bar{opacity:.45}
+.bars .bar.sel{opacity:1;transform:scaleY(1.12)}
+.service footer{display:flex;justify-content:space-between;margin-top:10px;font:400 12px/1 var(--mono);color:var(--muted)}
+.service footer .read{color:var(--fg)}
+.d45{display:none}
+
+/* incidents */
+.incidents{list-style:none;margin:0;padding:0}
+.incidents li{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-bottom:1px solid var(--line)}
+.incidents time{font:400 13px/1.6 var(--mono);color:var(--muted)}
+.incidents strong{font-weight:600}
+.incidents span{display:block;font:400 13px/1.6 var(--mono);color:var(--muted)}
+.incidents li.open span{color:var(--down)}
+.empty-note{color:var(--muted);padding:18px 0;margin:0;border-bottom:1px solid var(--line)}
+
+.foot{padding:56px 0 64px;font-size:14px;color:var(--muted);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+@media (max-width:600px){
+  .wrap{padding:0 20px}
+  .top{padding-top:20px}
+  .updated .abs{display:none}
+  .hero{padding:56px 0 40px}
+  .service header{flex-direction:column;gap:10px}
+  .bars{grid-template-columns:repeat(45,1fr);height:30px}
+  .bars .bar:nth-child(-n+45){display:none}           /* last 45 days on phones */
+  .d90{display:none}
+  .d45{display:inline!important}
+  .incidents li{grid-template-columns:1fr;gap:4px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body class="is-{{STATE}}">
+<div class="wrap">
+  <div class="top">
+    <a class="mark" href="./" aria-label="Status home"><b>a_</b><span>Status</span></a>
+    <div class="updated">Updated <time id="updated" datetime="{{UPDATED}}">{{UPDATED_HUMAN}}</time><br class="abs"><span class="abs">checked every 10 minutes</span></div>
+  </div>
+
+  <section class="hero">
+    <h1><em>{{HEADLINE}}.</em></h1>
+    <p class="sub">Live status of the {{COUNT}} services in my homelab, measured from outside by GitHub Actions. Bars show the last 90 days.</p>
+  </section>
+
+  <h2>Services</h2>
+  {{SERVICES}}
+
+  <h2>Incidents</h2>
+  {{INCIDENTS}}
+
+  <footer class="foot">
+    <span>Machine-readable: <a href="status.json">status.json</a></span>
+    <a href="{{REPO_URL}}">Source on GitHub</a>
+  </footer>
+</div>
+
+<script>
+(() => {
+  // Reload every 5 minutes while the tab is visible (no meta refresh: it interrupts screen readers).
+  setInterval(() => { if (document.visibilityState === "visible") location.reload(); }, 300000);
+
+  // Relative "updated" time.
+  const t = document.getElementById("updated");
+  const mins = Math.round((Date.now() - new Date(t.dateTime)) / 60000);
+  if (mins >= 0) t.textContent = mins < 1 ? "just now" : mins < 60 ? mins + " min ago" : t.textContent;
+
+  // Day readout: works with mouse and touch, replaces the footer line while active.
+  document.querySelectorAll(".service").forEach(svc => {
+    const bars = svc.querySelector(".bars"), foot = svc.querySelector("footer");
+    const original = foot.innerHTML;
+    let sel = null;
+    const show = el => {
+      if (!el || !el.classList.contains("bar") || el === sel) return;
+      sel && sel.classList.remove("sel");
+      sel = el; el.classList.add("sel"); bars.classList.add("active");
+      foot.innerHTML = '<span class="read"></span>';
+      foot.firstChild.textContent = el.dataset.tip;
+    };
+    const reset = () => { sel && sel.classList.remove("sel"); sel = null; bars.classList.remove("active"); foot.innerHTML = original; };
+    bars.addEventListener("pointermove", e => show(document.elementFromPoint(e.clientX, e.clientY)));
+    bars.addEventListener("pointerdown", e => show(document.elementFromPoint(e.clientX, e.clientY)));
+    bars.addEventListener("pointerleave", e => { if (e.pointerType === "mouse") reset(); });
+    document.addEventListener("pointerdown", e => { if (!bars.contains(e.target)) reset(); });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+---
+name: status
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write     # push history to the data branch
+  pages: write
+  id-token: write
+
+concurrency:
+  group: status
+  cancel-in-progress: false
+
+jobs:
+  check-and-publish:
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # History lives on its own branch, so main stays readable
+      # instead of getting a commit every 10 minutes.
+      - name: Check out history
+        run: |
+          if git ls-remote --exit-code --heads origin data >/dev/null; then
+            git fetch --depth 1 origin data
+            git worktree add data FETCH_HEAD
+          else
+            git worktree add --orphan -b data data
+          fi
+
+      - name: Run checks
+        run: python -m statuspage.check sites.toml data/history.json
+
+      - name: Save history
+        working-directory: data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add history.json
+          git commit -q -m "checks $(date -u +%Y-%m-%dT%H:%MZ)" || exit 0
+          git push -q origin HEAD:data
+
+      - name: Build site
+        env:
+          REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+        run: python -m statuspage.build data/history.json site
+
+      - name: Check HTML
+        run: npx --yes html-validate@9 site/index.html
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@v4

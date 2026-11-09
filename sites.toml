@@ -1,0 +1,15 @@
+# Services shown on the status page. Checked every 10 minutes by GitHub Actions.
+
+[[service]]
+id = "portfolio"
+name = "Portfolio"
+url = "https://antonybdc.me"
+
+[[service]]
+id = "github"
+name = "GitHub Pages"
+url = "https://businessantonybdc-crypto.github.io/status-page/status.json"
+# Optional settings:
+# expect_status = 200
+# keyword = "some text that must appear in the response"
+# timeout = 15
