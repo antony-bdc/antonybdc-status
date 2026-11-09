@@ -1,0 +1,53 @@
+{
+ "services": {
+  "github": {
+   "days": {
+    "2026-11-09": {
+     "checks": 1,
+     "latency_n": 0,
+     "latency_sum": 0,
+     "up": 0
+    }
+   },
+   "incidents": [
+    {
+     "end": null,
+     "reason": "HTTP 404, expected 200",
+     "start": "2026-11-09T09:53:53+00:00"
+    }
+   ],
+   "last": {
+    "cert_expires": null,
+    "latency_ms": 114,
+    "reason": "HTTP 404, expected 200",
+    "status": 404,
+    "time": "2026-11-09T09:53:53+00:00",
+    "up": false
+   },
+   "name": "GitHub Pages",
+   "url": "https://businessantonybdc-crypto.github.io/status-page/status.json"
+  },
+  "portfolio": {
+   "days": {
+    "2026-11-09": {
+     "checks": 1,
+     "latency_n": 1,
+     "latency_sum": 1645,
+     "up": 1
+    }
+   },
+   "incidents": [],
+   "last": {
+    "cert_expires": "2026-12-11T13:48:31+00:00",
+    "latency_ms": 1645,
+    "reason": "OK",
+    "status": 200,
+    "time": "2026-11-09T09:53:53+00:00",
+    "up": true
+   },
+   "name": "Portfolio",
+   "url": "https://antonybdc.me"
+  }
+ },
+ "updated": "2026-11-09T09:53:53+00:00"
+}
