@@ -1,53 +1,47 @@
 {
  "services": {
-  "github": {
+  "games": {
    "days": {
     "2026-11-09": {
-     "checks": 2,
-     "latency_n": 0,
-     "latency_sum": 0,
-     "up": 0
+     "checks": 1,
+     "latency_n": 1,
+     "latency_sum": 146,
+     "up": 1
     }
    },
-   "incidents": [
-    {
-     "end": null,
-     "reason": "HTTP 404, expected 200",
-     "start": "2026-11-09T09:53:53+00:00"
-    }
-   ],
+   "incidents": [],
    "last": {
-    "cert_expires": null,
-    "latency_ms": 89,
-    "reason": "HTTP 404, expected 200",
-    "status": 404,
-    "time": "2026-11-09T09:55:44+00:00",
-    "up": false
+    "cert_expires": "2026-12-29T23:44:45+00:00",
+    "latency_ms": 146,
+    "reason": "OK",
+    "status": 200,
+    "time": "2026-11-09T10:00:02+00:00",
+    "up": true
    },
-   "name": "GitHub Pages",
-   "url": "https://businessantonybdc-crypto.github.io/status-page/status.json"
+   "name": "Games",
+   "url": "https://businessantonybdc-crypto.github.io/games-showcase/"
   },
   "portfolio": {
    "days": {
     "2026-11-09": {
-     "checks": 2,
-     "latency_n": 2,
-     "latency_sum": 2884,
-     "up": 2
+     "checks": 3,
+     "latency_n": 3,
+     "latency_sum": 4157,
+     "up": 3
     }
    },
    "incidents": [],
    "last": {
     "cert_expires": "2026-12-11T13:48:31+00:00",
-    "latency_ms": 1239,
+    "latency_ms": 1273,
     "reason": "OK",
     "status": 200,
-    "time": "2026-11-09T09:55:44+00:00",
+    "time": "2026-11-09T10:00:02+00:00",
     "up": true
    },
    "name": "Portfolio",
    "url": "https://antonybdc.me"
   }
  },
- "updated": "2026-11-09T09:55:44+00:00"
+ "updated": "2026-11-09T10:00:02+00:00"
 }
