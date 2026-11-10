@@ -7,15 +7,21 @@
      "latency_n": 2,
      "latency_sum": 279,
      "up": 2
+    },
+    "2026-11-10": {
+     "checks": 1,
+     "latency_n": 1,
+     "latency_sum": 275,
+     "up": 1
     }
    },
    "incidents": [],
    "last": {
     "cert_expires": "2026-12-29T23:44:45+00:00",
-    "latency_ms": 133,
+    "latency_ms": 275,
     "reason": "OK",
     "status": 200,
-    "time": "2026-11-09T20:25:50+00:00",
+    "time": "2026-11-10T02:51:06+00:00",
     "up": true
    },
    "name": "Games",
@@ -28,20 +34,26 @@
      "latency_n": 4,
      "latency_sum": 6197,
      "up": 4
+    },
+    "2026-11-10": {
+     "checks": 1,
+     "latency_n": 1,
+     "latency_sum": 2334,
+     "up": 1
     }
    },
    "incidents": [],
    "last": {
     "cert_expires": "2026-12-11T13:48:31+00:00",
-    "latency_ms": 2040,
+    "latency_ms": 2334,
     "reason": "OK",
     "status": 200,
-    "time": "2026-11-09T20:25:50+00:00",
+    "time": "2026-11-10T02:51:06+00:00",
     "up": true
    },
    "name": "Portfolio",
    "url": "https://antonybdc.me"
   }
  },
- "updated": "2026-11-09T20:25:50+00:00"
+ "updated": "2026-11-10T02:51:06+00:00"
 }
