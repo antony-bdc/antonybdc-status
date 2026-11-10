@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Inter;font-weight:400;src:url(../statuspage/assets/inter-latin-400-normal.woff2)}
+@font-face{font-family:Inter;font-weight:500;src:url(../statuspage/assets/inter-latin-500-normal.woff2)}
+@font-face{font-family:Inter;font-weight:700;src:url(../statuspage/assets/inter-latin-700-normal.woff2)}
+@font-face{font-family:Inco;font-weight:400;src:url(../statuspage/assets/inconsolata-latin-400-normal.woff2)}
+html,body{margin:0}
+body{width:1200px;height:630px;overflow:hidden;background:#0c0c0c;color:#f3f3f3;font-family:Inter;-webkit-font-smoothing:antialiased;position:relative}
+.top{position:absolute;left:72px;right:72px;top:56px;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:14px;font-weight:500;font-size:22px}
+.brand img{width:36px;height:36px}
+.mono{font:400 20px/1 Inco,monospace;color:#86868b}
+h1{position:absolute;left:72px;top:190px;margin:0;font:700 112px/.92 Inter;letter-spacing:-.055em}
+h1 span{display:block;color:#a1a1a6}
+.lead{position:absolute;left:72px;top:440px;width:470px;font-size:24px;line-height:1.4;color:#dfdfdf}
+.card{position:absolute;right:72px;top:176px;width:500px;background:#141414;border:1px solid #262626;border-radius:22px;padding:30px 30px 26px}
+.row{padding:16px 0;border-top:1px solid #222}
+.row:first-of-type{border-top:0;padding-top:4px}
+.name{display:flex;justify-content:space-between;font-size:20px;font-weight:500;margin-bottom:12px}
+.name small{font:400 17px/1 Inco,monospace;color:#86868b;align-self:center}
+.bars{display:grid;grid-template-columns:repeat(45,1fr);gap:3px;height:34px}
+.bars i{background:#e8e8e8;border-radius:2px}
+.foot{display:flex;justify-content:space-between;margin-top:14px;font:400 15px/1 Inco,monospace;color:#86868b}
+</style></head><body>
+<div class="top"><div class="brand"><img src="../statuspage/assets/logo.png" alt="">Antony BDC</div><div class="mono">antony-bdc.github.io/antonybdc-status</div></div>
+<h1>Status<span>live.</span></h1>
+<p class="lead">Verfügbarkeit von antonybdc.me und meinen Projekten. Automatisch geprüft, rund um die Uhr.</p>
+<div class="card" id="card">
+  <div class="row"><div class="name">Website<small>antonybdc.me</small></div><div class="bars"></div></div>
+  <div class="row"><div class="name">Spiele<small>antony-arcade</small></div><div class="bars"></div></div>
+  <div class="row"><div class="name">duftfinder<small>github.io</small></div><div class="bars"></div></div>
+  <div class="foot"><span>90 Tage</span><span>heute</span></div>
+</div>
+<script>
+document.querySelectorAll('.bars').forEach(b=>{b.innerHTML='<i></i>'.repeat(45)});
+document.fonts.ready.then(()=>document.body.dataset.ready='1');
+</script>
+</body></html>
