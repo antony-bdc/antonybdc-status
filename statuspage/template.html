@@ -26,6 +26,7 @@
   --ease:cubic-bezier(.2,.7,.2,1);
 }
 *{box-sizing:border-box}
+.defs{position:absolute}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
@@ -153,7 +154,7 @@ h2{font:700 clamp(32px,4vw,48px)/1 var(--sans);letter-spacing:-.04em;margin:0 0 
 </style>
 </head>
 <body class="is-{{STATE}}">
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="sparkfill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3f3f3" stop-opacity=".14"/><stop offset="1" stop-color="#f3f3f3" stop-opacity="0"/></linearGradient></defs></svg>
+<svg class="defs" width="0" height="0" aria-hidden="true"><defs><linearGradient id="sparkfill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3f3f3" stop-opacity=".14"/><stop offset="1" stop-color="#f3f3f3" stop-opacity="0"/></linearGradient></defs></svg>
 <div class="wrap">
   <nav class="nav">
     <a class="brand" href="https://antonybdc.me"><img src="assets/logo.png" alt="" width="26" height="26">Antony BdC</a>
