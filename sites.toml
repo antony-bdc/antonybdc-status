@@ -8,7 +8,7 @@ url = "https://antonybdc.me"
 [[service]]
 id = "games"
 name = "Games"
-url = "https://businessantonybdc-crypto.github.io/games-showcase/"
+url = "https://antony-bdc.github.io/antony-arcade/"
 # Optional settings:
 # expect_status = 200
 # keyword = "some text that must appear in the response"

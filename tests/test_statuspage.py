@@ -88,7 +88,7 @@ def test_build_renders_page_api_and_badges(tmp_path):
     h["updated"] = NOW.isoformat()
     (tmp_path / "history.json").write_text(json.dumps(h))
     out = tmp_path / "site"
-    build.build(tmp_path / "history.json", out, "https://github.com/x/status-page")
+    build.build(tmp_path / "history.json", out, "https://github.com/x/antonybdc-status")
 
     html = (out / "index.html").read_text()
     assert "Partial outage" in html and 'class="is-partial"' in html

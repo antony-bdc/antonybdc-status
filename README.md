@@ -1,4 +1,4 @@
-# status-page
+# antonybdc-status
 
 A self-updating status page for my homelab, hosted for free on GitHub Pages.
 GitHub Actions checks every service every 10 minutes from the outside, keeps 90 days of history
@@ -18,7 +18,7 @@ flowchart LR
 
 - Uptime bars for 90 days per service (45 on phones). Hover or tap a day for uptime and average response time.
 - Incidents open automatically when a check fails and close when it recovers, with duration.
-- `status.json` for other tools, and a badge per service: `![](https://businessantonybdc-crypto.github.io/status-page/badge/portfolio.svg)`
+- `status.json` for other tools, and a badge per service: `![](https://antony-bdc.github.io/antonybdc-status/badge/portfolio.svg)`
 - Light and dark mode, self-hosted fonts, works without JavaScript (JS only adds the day readout and relative time).
 
 ## Add a service
@@ -48,10 +48,10 @@ Locally: `make test`, `make check`, `make serve`.
 - **History on its own branch.** Checks commit to `data`; `main` only contains code and config, so its log stays readable.
 - **Daily aggregates instead of raw checks.** 90 days × 144 checks would be ~13,000 entries per service; storing counters per day keeps `history.json` a few kilobytes.
 - **An outage is data, not a failed build.** The check script exits 0 when a site is down, otherwise every outage would also look like a broken workflow.
-- **Measured from outside.** It complements [homelab-monitoring](https://github.com/businessantonybdc-crypto/homelab-monitoring), which runs *inside* the network and can't notice when the whole network is unreachable.
+- **Measured from outside.** It complements [observatory](https://github.com/antony-bdc/observatory), which runs *inside* the network and can't notice when the whole network is unreachable.
 
 Note: GitHub pauses scheduled workflows in repositories without activity for 60 days. The commits to the `data` branch count as activity.
 
 ---
 
-Part of my homelab series → [homelab-monitoring](https://github.com/businessantonybdc-crypto/homelab-monitoring) · [minecraft-server-ops](https://github.com/businessantonybdc-crypto/minecraft-server-ops)
+Part of my homelab series → [observatory](https://github.com/antony-bdc/observatory) · [dwellers-galaxy](https://github.com/antony-bdc/dwellers-galaxy)

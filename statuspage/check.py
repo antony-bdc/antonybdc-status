@@ -15,7 +15,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 HISTORY_DAYS = 90
-USER_AGENT = "status-page-checker/1.0 (+https://github.com/businessantonybdc-crypto/status-page)"
+USER_AGENT = "antonybdc-status-checker/1.0 (+https://github.com/antony-bdc/antonybdc-status)"
 
 
 @dataclass
