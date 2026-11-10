@@ -2,13 +2,18 @@
 
 [[service]]
 id = "portfolio"
-name = "Portfolio"
+name = "Website"
 url = "https://antonybdc.me"
 
 [[service]]
 id = "games"
-name = "Games"
+name = "Spiele"
 url = "https://antony-bdc.github.io/antony-arcade/"
+
+[[service]]
+id = "duftfinder"
+name = "duftfinder"
+url = "https://antony-bdc.github.io/duftfinder/"
 # Optional settings:
 # expect_status = 200
 # keyword = "some text that must appear in the response"

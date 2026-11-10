@@ -1,139 +1,220 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de-CH">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Status · {{HEADLINE}}</title>
-<meta name="description" content="Live status and 90-day uptime of my homelab services.">
-<meta name="color-scheme" content="light dark">
-<link rel="preload" href="assets/inter-tight-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="description" content="Live-Status und Verfügbarkeit der letzten 90 Tage von antonybdc.me und meinen Projekten.">
+<meta name="theme-color" content="#0c0c0c">
+<link rel="icon" href="assets/logo.png" type="image/png">
+<link rel="preload" href="assets/inter-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="alternate" type="application/json" href="status.json">
 <style>
-@font-face{font-family:"Inter Tight";font-weight:400;font-display:swap;src:url(assets/inter-tight-latin-400-normal.woff2) format("woff2")}
-@font-face{font-family:"Inter Tight";font-weight:600;font-display:swap;src:url(assets/inter-tight-latin-600-normal.woff2) format("woff2")}
-@font-face{font-family:"JetBrains Mono";font-weight:400;font-display:swap;src:url(assets/jetbrains-mono-latin-400-normal.woff2) format("woff2")}
-@font-face{font-family:"JetBrains Mono";font-weight:700;font-display:swap;src:url(assets/jetbrains-mono-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:400;font-display:swap;src:url(assets/inter-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:500;font-display:swap;src:url(assets/inter-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:700;font-display:swap;src:url(assets/inter-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Inco";font-weight:400;font-display:swap;src:url(assets/inconsolata-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Inco";font-weight:500;font-display:swap;src:url(assets/inconsolata-latin-500-normal.woff2) format("woff2")}
 
+/* Same palette and type as antonybdc.me: black, greys, one green for "live". */
 :root{
-  --bg:#fafaf9; --fg:#0c0c0d; --muted:#6b6b70; --line:#e4e4e2;
-  --ok:#0c0c0d; --partial:#a3a3a8; --down:#d93a3f; --empty:#e9e9e7;
-  --sans:"Inter Tight",ui-sans-serif,system-ui,sans-serif;
-  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
-}
-@media (prefers-color-scheme:dark){
-  :root{--bg:#0b0b0c; --fg:#f2f2f0; --muted:#8e8e93; --line:#232326;
-        --ok:#f2f2f0; --partial:#5e5e63; --down:#ff5b5f; --empty:#1f1f22}
+  color-scheme:dark;
+  --bg:#0c0c0c;--card:#141414;--card-2:#1b1b1b;--fg:#f3f3f3;--fg-2:#dfdfdf;--muted:#a1a1a6;--dim:#86868b;
+  --line:#262626;--ok:#2fb65f;--down:#ff5b5f;--partial:#d4a73a;--bar:#e8e8e8;--bar-empty:#222;
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",system-ui,sans-serif;
+  --mono:"Inco",ui-monospace,Menlo,monospace;
+  --ease:cubic-bezier(.2,.7,.2,1);
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.5 var(--sans);
-     -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-a{color:inherit;text-decoration-thickness:1px;text-underline-offset:3px}
-a:hover{text-decoration-thickness:2px}
-a:focus-visible{outline:2px solid var(--fg);outline-offset:3px;border-radius:2px}
-.wrap{max-width:880px;margin:0 auto;padding:0 28px}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+a:focus-visible{outline:2px solid var(--fg);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 32px}
+.label{display:block;font:400 13px/1 var(--mono);color:var(--dim);letter-spacing:-.01em}
 
-/* top bar */
-.top{display:flex;align-items:center;justify-content:space-between;padding:28px 0 0}
-.mark{display:flex;align-items:baseline;gap:12px;text-decoration:none}
-.mark b{font:700 22px/1 var(--mono);letter-spacing:-.04em}
-.mark span{font-size:15px;color:var(--muted)}
-.updated{font:400 13px/1.4 var(--mono);color:var(--muted);text-align:right}
+/* nav, like the website */
+.nav{display:flex;align-items:center;justify-content:space-between;height:72px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;font-weight:500;font-size:15px}
+.brand img{width:26px;height:26px}
+.nav-links{display:flex;gap:6px;align-items:center}
+.nav-links a{font-size:14px;color:var(--muted);padding:8px 14px;border-radius:999px;transition:color .2s,background .2s}
+.nav-links a:hover{color:var(--fg);background:var(--card)}
+.nav-links .pill{color:#0c0c0c;background:var(--fg);font-weight:500}
+.nav-links .pill:hover{background:#fff;color:#0c0c0c}
 
-/* headline */
-.hero{padding:96px 0 56px;border-bottom:1px solid var(--line)}
-h1{font:600 clamp(40px,7vw,72px)/1.02 var(--sans);letter-spacing:-.035em;margin:0;max-width:14ch}
-.is-partial h1 em,.is-major h1 em{color:var(--down)}
-h1 em{font-style:normal}
-.sub{margin:22px 0 0;color:var(--muted);max-width:52ch}
+/* hero */
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center;padding:88px 0 72px}
+.live{display:inline-flex;align-items:center;gap:10px;font:400 14px/1 var(--mono);color:var(--muted)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(47,182,95,.6);animation:pulse 2.4s infinite}
+.is-partial .live i{background:var(--partial);box-shadow:0 0 0 0 rgba(212,167,58,.6)}
+.is-major .live i{background:var(--down);box-shadow:0 0 0 0 rgba(255,91,95,.6)}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(0,0,0,0)}100%{box-shadow:0 0 0 0 rgba(0,0,0,0)}}
+h1{font:700 clamp(56px,8.4vw,112px)/.92 var(--sans);letter-spacing:-.05em;margin:22px 0 0}
+h1 span{display:block}
+h1 .l2{color:var(--muted)}
+.is-partial h1 .l2,.is-major h1 .l2{color:var(--down)}
+.lead{margin:26px 0 0;color:var(--fg-2);font-size:18px;max-width:40ch}
+.facts{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:12px 44px;margin-top:40px;padding-top:24px;border-top:1px solid var(--line)}
+.facts b{display:block;font:400 22px/1.2 var(--mono);color:var(--fg);margin-top:8px;letter-spacing:-.02em}
 
-/* services */
-h2{font:600 13px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:56px 0 8px}
-.service{padding:26px 0 22px;border-bottom:1px solid var(--line)}
-.service header{display:flex;justify-content:space-between;align-items:baseline;gap:20px;margin-bottom:16px}
-.who{display:flex;align-items:baseline;gap:12px;min-width:0;flex-wrap:wrap}
-.who .dot{width:8px;height:8px;border-radius:50%;background:var(--fg);transform:translateY(-2px);flex:none}
-.is-down .who .dot{background:var(--down)}
-.who h3{font:600 20px/1.2 var(--sans);letter-spacing:-.015em;margin:0}
-.who a{font:400 13px/1 var(--mono);color:var(--muted);text-decoration:none;overflow-wrap:anywhere}
+/* animated request diagram */
+.flow-card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:28px}
+.flow-card .label{margin-bottom:18px}
+.flow{width:100%;height:auto;display:block;overflow:visible}
+.flow .node rect{fill:var(--card-2);stroke:var(--line)}
+.flow .src rect{fill:#0f0f0f;stroke:#333}
+.flow .t1{font:500 16px var(--sans);fill:var(--fg)}
+.flow .t2{font:400 14px var(--mono);fill:var(--dim)}
+.flow .wire{fill:none;stroke:#2c2c2c;stroke-width:1.5}
+.flow .wire.up{stroke-dasharray:3 6;animation:dash 1.6s linear infinite}
+.flow .wire.down{stroke:rgba(255,91,95,.35)}
+@keyframes dash{to{stroke-dashoffset:-18}}
+.flow .pkt.up{fill:var(--fg)}
+.flow .pkt.down{fill:var(--down)}
+.flow .led{fill:var(--ok)}
+.flow .down .led{fill:var(--down)}
+.flow .dst.down rect{stroke:rgba(255,91,95,.5)}
+
+/* sections */
+h2{font:700 clamp(32px,4vw,48px)/1 var(--sans);letter-spacing:-.04em;margin:0 0 8px}
+.sec-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin:96px 0 28px}
+.sec-head p{margin:0;color:var(--muted);max-width:44ch}
+
+.services{display:grid;gap:18px}
+.service{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:28px 30px 22px;opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.service.in{opacity:1;transform:none}
+.service header{display:flex;justify-content:space-between;align-items:start;gap:24px}
+.who h3{font:700 28px/1.1 var(--sans);letter-spacing:-.03em;margin:0}
+.who a{display:inline-block;margin-top:6px;font:400 15px/1 var(--mono);color:var(--dim);transition:color .2s}
 .who a:hover{color:var(--fg)}
-.nums{display:flex;gap:22px;font:400 14px/1 var(--mono);white-space:nowrap}
-.nums .now{color:var(--muted)}
-.is-down .nums .now{color:var(--down)}
-.nums .pct{font-weight:700}
+.pct{text-align:right;font:700 30px/1 var(--sans);letter-spacing:-.03em;white-space:nowrap}
+.pct .label{margin-bottom:8px;font-weight:400}
+.now{display:flex;align-items:center;gap:9px;margin:16px 0 0;font:400 15px/1 var(--mono);color:var(--fg-2)}
+.now .dot{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+.is-down .now{color:var(--down)}
+.is-down .now .dot{background:var(--down)}
+.spark-wrap{margin:22px 0 18px}
+.spark-wrap .label{margin-bottom:10px}
+.spark{width:100%;height:56px;display:block;overflow:visible}
+.spark{clip-path:inset(0 100% 0 0);transition:clip-path 1.6s var(--ease) .2s}
+.service.in .spark{clip-path:inset(0 0 0 0)}
+.spark .line{fill:none;stroke:var(--fg);stroke-width:1.5;vector-effect:non-scaling-stroke}
+.spark .area{fill:url(#sparkfill);opacity:.9}
+.spark-scale{display:flex;justify-content:space-between;font:400 12px/1 var(--mono);color:var(--dim);margin-top:6px}
+.spark-empty{margin:0;color:var(--dim);font:400 14px/1.4 var(--mono)}
 
-.bars{display:grid;grid-template-columns:repeat(90,1fr);gap:2px;height:36px;touch-action:pan-y}
-.bar{display:block;border-radius:1.5px;background:var(--empty);transition:transform .15s ease-out,opacity .15s ease-out;transform-origin:bottom}
-.bar.ok{background:var(--ok)}
+.bars{display:grid;grid-template-columns:repeat(90,1fr);gap:2px;height:34px;touch-action:pan-y}
+.bar{display:block;border-radius:2px;background:var(--bar-empty);transform-origin:bottom;transition:transform .15s,opacity .15s}
+.bar.ok{background:var(--bar)}
 .bar.partial{background:var(--partial)}
 .bar.down{background:var(--down)}
-.bars:hover .bar,.bars.active .bar{opacity:.45}
-.bars .bar.sel{opacity:1;transform:scaleY(1.12)}
-.service footer{display:flex;justify-content:space-between;margin-top:10px;font:400 12px/1 var(--mono);color:var(--muted)}
+.bars:hover .bar,.bars.active .bar{opacity:.4}
+.bars .bar.sel{opacity:1;transform:scaleY(1.15)}
+.service footer{display:flex;justify-content:space-between;margin-top:10px;font:400 13px/1 var(--mono);color:var(--dim)}
 .service footer .read{color:var(--fg)}
 .d45{display:none}
 
-/* incidents */
-.incidents{list-style:none;margin:0;padding:0}
-.incidents li{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-bottom:1px solid var(--line)}
-.incidents time{font:400 13px/1.6 var(--mono);color:var(--muted)}
-.incidents strong{font-weight:600}
-.incidents span{display:block;font:400 13px/1.6 var(--mono);color:var(--muted)}
+.incidents{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.incidents li{display:grid;grid-template-columns:220px 1fr;gap:24px;padding:20px 0;border-bottom:1px solid var(--line)}
+.incidents time{font:400 14px/1.6 var(--mono);color:var(--dim)}
+.incidents strong{font-weight:500}
+.incidents span{display:block;font:400 14px/1.6 var(--mono);color:var(--dim)}
 .incidents li.open span{color:var(--down)}
-.empty-note{color:var(--muted);padding:18px 0;margin:0;border-bottom:1px solid var(--line)}
+.empty-note{color:var(--muted);padding:22px 0;margin:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 
-.foot{padding:56px 0 64px;font-size:14px;color:var(--muted);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.foot{margin-top:96px;padding:32px 0 48px;border-top:1px solid var(--line);font:400 14px/1.6 var(--mono);color:var(--dim);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.foot a{color:var(--muted)}
+.foot a:hover{color:var(--fg)}
 
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;gap:44px;padding:56px 0 40px}
+}
 @media (max-width:600px){
   .wrap{padding:0 20px}
-  .top{padding-top:20px}
-  .updated .abs{display:none}
-  .hero{padding:56px 0 40px}
-  .service header{flex-direction:column;gap:10px}
+  .nav-links a:not(.pill){display:none}
+  .facts{grid-template-columns:1fr 1fr;gap:18px 28px}
+  .flow-card{padding:18px}
+  .sec-head{flex-direction:column;align-items:start;margin-top:72px}
+  .service{padding:22px 20px 18px}
+  .service header{flex-direction:column;gap:14px}
+  .pct{text-align:left}
   .bars{grid-template-columns:repeat(45,1fr);height:30px}
-  .bars .bar:nth-child(-n+45){display:none}           /* last 45 days on phones */
-  .d90{display:none}
-  .d45{display:inline!important}
+  .bars .bar:nth-child(-n+45){display:none}
+  .d90{display:none}.d45{display:inline!important}
   .incidents li{grid-template-columns:1fr;gap:4px}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .service{opacity:1;transform:none}
+  .spark{clip-path:none}
+  .flow .pkt{display:none}
+}
 </style>
 </head>
 <body class="is-{{STATE}}">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="sparkfill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3f3f3" stop-opacity=".14"/><stop offset="1" stop-color="#f3f3f3" stop-opacity="0"/></linearGradient></defs></svg>
 <div class="wrap">
-  <div class="top">
-    <a class="mark" href="./" aria-label="Status home"><b>a_</b><span>Status</span></a>
-    <div class="updated">Updated <time id="updated" datetime="{{UPDATED}}">{{UPDATED_HUMAN}}</time><br class="abs"><span class="abs">checked every 10 minutes</span></div>
-  </div>
+  <nav class="nav">
+    <a class="brand" href="https://antonybdc.me"><img src="assets/logo.png" alt="" width="26" height="26">Antony BdC</a>
+    <div class="nav-links">
+      <a href="#dienste">Dienste</a>
+      <a href="#stoerungen">Störungen</a>
+      <a class="pill" href="https://antonybdc.me">antonybdc.me</a>
+    </div>
+  </nav>
 
   <section class="hero">
-    <h1><em>{{HEADLINE}}.</em></h1>
-    <p class="sub">Live status of the {{COUNT}} services in my homelab, measured from outside by GitHub Actions. Bars show the last 90 days.</p>
+    <div>
+      <p class="live"><i></i>Live · zuletzt geprüft <time id="updated" datetime="{{UPDATED}}">{{UPDATED_HUMAN}}</time></p>
+      <h1><span>{{LINE1}}</span><span class="l2">{{LINE2}}</span></h1>
+      <p class="lead">Live-Status meiner Website und meiner Projekte. GitHub Actions prüft alle {{COUNT}} Dienste alle zehn Minuten von aussen.</p>
+      <div class="facts">
+        <div><span class="label">Erreichbar · 90 Tage</span><b>{{UPTIME}}</b></div>
+        <div><span class="label">Ø Antwortzeit heute</span><b>{{LATENCY}}</b></div>
+        <div><span class="label">Störungen · 90 Tage</span><b>{{INCIDENT_COUNT}}</b></div>
+      </div>
+    </div>
+    <div class="flow-card">
+      <span class="label">So wird gemessen</span>
+      {{DIAGRAM}}
+    </div>
   </section>
 
-  <h2>Services</h2>
-  {{SERVICES}}
+  <div class="sec-head" id="dienste">
+    <div><h2>Dienste</h2></div>
+    <p>Jeder Balken ist ein Tag. Antippen oder darüberfahren zeigt Verfügbarkeit und Antwortzeit.</p>
+  </div>
+  <div class="services">{{SERVICES}}</div>
 
-  <h2>Incidents</h2>
+  <div class="sec-head" id="stoerungen">
+    <div><h2>Störungen</h2></div>
+    <p>Jede Störung wird automatisch erfasst und wieder geschlossen, sobald der Dienst antwortet.</p>
+  </div>
   {{INCIDENTS}}
 
   <footer class="foot">
-    <span>Machine-readable: <a href="status.json">status.json</a></span>
-    <a href="{{REPO_URL}}">Source on GitHub</a>
+    <span>Maschinenlesbar: <a href="status.json">status.json</a></span>
+    <a href="{{REPO_URL}}">Code auf GitHub ↗</a>
   </footer>
 </div>
 
 <script>
 (() => {
-  // Reload every 5 minutes while the tab is visible (no meta refresh: it interrupts screen readers).
+  // Reload every 5 minutes while visible (no meta refresh: it interrupts screen readers).
   setInterval(() => { if (document.visibilityState === "visible") location.reload(); }, 300000);
 
-  // Relative "updated" time.
   const t = document.getElementById("updated");
   const mins = Math.round((Date.now() - new Date(t.dateTime)) / 60000);
-  if (mins >= 0) t.textContent = mins < 1 ? "just now" : mins < 60 ? mins + " min ago" : t.textContent;
+  if (mins >= 0) t.textContent = mins < 1 ? "gerade eben" : mins < 60 ? "vor " + mins + " Min." : t.textContent;
 
-  // Day readout: works with mouse and touch, replaces the footer line while active.
+  // Cards rise in when they scroll into view.
+  const io = "IntersectionObserver" in window && new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+  }), { threshold: .15 });
+  document.querySelectorAll(".service").forEach(s => io ? io.observe(s) : s.classList.add("in"));
+
+  // Day readout for mouse and touch; replaces the footer line while active.
   document.querySelectorAll(".service").forEach(svc => {
     const bars = svc.querySelector(".bars"), foot = svc.querySelector("footer");
     const original = foot.innerHTML;

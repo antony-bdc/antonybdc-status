@@ -91,14 +91,15 @@ def test_build_renders_page_api_and_badges(tmp_path):
     build.build(tmp_path / "history.json", out, "https://github.com/x/antonybdc-status")
 
     html = (out / "index.html").read_text()
-    assert "Partial outage" in html and 'class="is-partial"' in html
+    assert "Teilweise" in html and 'class="is-partial"' in html
     assert "Mine&lt;craft&gt;" in html  # names are escaped
     assert html.count('class="bar ') == 180  # 90 bars per service
     assert "{{" not in html  # every placeholder replaced
     api = json.loads((out / "status.json").read_text())
     assert api["services"]["web"]["uptime_90d"] == 1 and api["services"]["mc"]["up"] is False
     assert (out / "badge" / "web.svg").read_text().startswith("<svg")
-    assert (out / "assets" / "inter-tight-latin-600-normal.woff2").exists()
+    assert (out / "assets" / "inter-latin-700-normal.woff2").exists()
+    assert html.count("<animateMotion") == 2  # one request packet per service in the diagram
 
 
 @pytest.mark.parametrize(("up", "checks", "state"), [(10, 10, "ok"), (96, 100, "partial"), (5, 10, "down")])
