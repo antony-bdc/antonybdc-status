@@ -13,15 +13,21 @@
      "latency_n": 3,
      "latency_sum": 398,
      "up": 3
+    },
+    "2026-11-12": {
+     "checks": 1,
+     "latency_n": 1,
+     "latency_sum": 93,
+     "up": 1
     }
    },
    "incidents": [],
    "last": {
     "cert_expires": "2026-12-29T23:44:45+00:00",
-    "latency_ms": 119,
+    "latency_ms": 93,
     "reason": "OK",
     "status": 200,
-    "time": "2026-11-11T18:07:48+00:00",
+    "time": "2026-11-12T00:37:50+00:00",
     "up": true
    },
    "name": "duftfinder",
@@ -46,6 +52,12 @@
      "latency_n": 3,
      "latency_sum": 418,
      "up": 3
+    },
+    "2026-11-12": {
+     "checks": 1,
+     "latency_n": 1,
+     "latency_sum": 216,
+     "up": 1
     }
    },
    "incidents": [
@@ -57,10 +69,10 @@
    ],
    "last": {
     "cert_expires": "2026-12-29T23:44:45+00:00",
-    "latency_ms": 135,
+    "latency_ms": 216,
     "reason": "OK",
     "status": 200,
-    "time": "2026-11-11T18:07:48+00:00",
+    "time": "2026-11-12T00:37:50+00:00",
     "up": true
    },
    "name": "Spiele",
@@ -85,20 +97,26 @@
      "latency_n": 3,
      "latency_sum": 4822,
      "up": 3
+    },
+    "2026-11-12": {
+     "checks": 1,
+     "latency_n": 1,
+     "latency_sum": 1109,
+     "up": 1
     }
    },
    "incidents": [],
    "last": {
     "cert_expires": "2027-02-09T06:50:32+00:00",
-    "latency_ms": 1504,
+    "latency_ms": 1109,
     "reason": "OK",
     "status": 200,
-    "time": "2026-11-11T18:07:48+00:00",
+    "time": "2026-11-12T00:37:50+00:00",
     "up": true
    },
    "name": "Website",
    "url": "https://antonybdc.me"
   }
  },
- "updated": "2026-11-11T18:07:48+00:00"
+ "updated": "2026-11-12T00:37:50+00:00"
 }
