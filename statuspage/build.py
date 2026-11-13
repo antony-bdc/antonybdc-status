@@ -51,7 +51,7 @@ def fmt_day(d: date) -> str:
 
 
 def overall(services: dict) -> tuple[str, str, str]:
-    """State plus a two-line headline (second line is shown in grey, like on antonybdc.me)."""
+    """State plus a two-line headline (second line is shown in grey, like on antonybdc.ch)."""
     states = [s.get("last", {}).get("up", True) for s in services.values()]
     if all(states):
         return "operational", "Alle Systeme", "laufen."
