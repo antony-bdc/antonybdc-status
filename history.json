@@ -45,19 +45,19 @@
      "up": 3
     },
     "2026-11-17": {
-     "checks": 1,
-     "latency_n": 1,
-     "latency_sum": 83,
-     "up": 1
+     "checks": 2,
+     "latency_n": 2,
+     "latency_sum": 274,
+     "up": 2
     }
    },
    "incidents": [],
    "last": {
     "cert_expires": "2026-12-29T23:44:45+00:00",
-    "latency_ms": 83,
+    "latency_ms": 191,
     "reason": "OK",
     "status": 200,
-    "time": "2026-11-17T05:15:12+00:00",
+    "time": "2026-11-17T14:37:08+00:00",
     "up": true
    },
    "name": "duftfinder",
@@ -114,10 +114,10 @@
      "up": 3
     },
     "2026-11-17": {
-     "checks": 1,
-     "latency_n": 1,
-     "latency_sum": 96,
-     "up": 1
+     "checks": 2,
+     "latency_n": 2,
+     "latency_sum": 233,
+     "up": 2
     }
    },
    "incidents": [
@@ -129,10 +129,10 @@
    ],
    "last": {
     "cert_expires": "2026-12-29T23:44:45+00:00",
-    "latency_ms": 96,
+    "latency_ms": 137,
     "reason": "OK",
     "status": 200,
-    "time": "2026-11-17T05:15:12+00:00",
+    "time": "2026-11-17T14:37:08+00:00",
     "up": true
    },
    "name": "Spiele",
@@ -189,24 +189,24 @@
      "up": 3
     },
     "2026-11-17": {
-     "checks": 1,
-     "latency_n": 1,
-     "latency_sum": 1839,
-     "up": 1
+     "checks": 2,
+     "latency_n": 2,
+     "latency_sum": 3086,
+     "up": 2
     }
    },
    "incidents": [],
    "last": {
     "cert_expires": "2027-02-11T10:48:16+00:00",
-    "latency_ms": 1839,
+    "latency_ms": 1247,
     "reason": "OK",
     "status": 200,
-    "time": "2026-11-17T05:15:12+00:00",
+    "time": "2026-11-17T14:37:08+00:00",
     "up": true
    },
    "name": "Website",
    "url": "https://antonybdc.ch"
   }
  },
- "updated": "2026-11-17T05:15:12+00:00"
+ "updated": "2026-11-17T14:37:08+00:00"
 }
